@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+// TransactionPage.jsx
+
+import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import './TransactionPage.css';
 import { generateAndDownloadPDF } from '../../utils/pdfGenerator';
+import './TransactionPage.css';
 
 export default function TransactionPage() {
   const { method } = useParams();
@@ -24,6 +26,28 @@ export default function TransactionPage() {
 
   const displayName = methodNames[method] || method;
 
+  // Utiliser useEffect pour gérer la redirection une fois que le paiement est un succès
+  // Ceci évite le "Cannot remove child" en s'assurant que le composant a eu le temps de se mettre à jour
+  useEffect(() => {
+    let timeoutId;
+    if (isSuccess) {
+      timeoutId = setTimeout(() => {
+        // Rediriger vers la page de confirmation avec les données de transaction
+        navigate('/confirmation-paiement', {
+          state: {
+            amount,
+            method: displayName,
+            action,
+            formData,
+            templateId
+          }
+        });
+      }, 3000); // Redirection après 3 secondes
+    }
+    // Fonction de nettoyage pour annuler la redirection si le composant est démonté
+    return () => clearTimeout(timeoutId);
+  }, [isSuccess, amount, displayName, action, formData, templateId, navigate]);
+
   const handlePaymentSuccess = async () => {
     setIsProcessing(true);
     setError(null);
@@ -38,78 +62,51 @@ export default function TransactionPage() {
       if (action === 'download') {
         console.log('Tentative de génération PDF...');
         const success = await generateAndDownloadPDF(formData, templateId);
-        
         if (!success) {
-          throw new Error('La génération du PDF a échoué - voir console pour détails');
+          throw new Error('Échec de la génération du PDF');
         }
       }
-
+      
+      // Simuler un délai de traitement de l'API
+      await new Promise(resolve => setTimeout(resolve, 2000)); 
+      
+      // Mettre à jour l'état de succès une fois toutes les actions terminées
+      setIsProcessing(false);
       setIsSuccess(true);
-      
-      setTimeout(() => {
-        navigate('/payment-confirmation', {
-          state: { 
-            amount, 
-            method: displayName,
-            action,
-            formData,
-            templateId
-          }
-        });
-      }, 2000);
-
     } catch (err) {
-      console.error('Erreur complète:', {
-        error: err,
-        formData,
-        templateId
-      });
-      
-      setError(`
-        Échec du traitement: ${err.message}
-        ${action === 'download' 
-          ? 'Le téléchargement a échoué.' 
-          : 'La commande a échoué.'}
-        Veuillez réessayer ou contacter le support.
-      `);
-    } finally {
+      console.error('Erreur lors du traitement du paiement:', err);
+      setError(err.message || 'Une erreur est survenue.');
       setIsProcessing(false);
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (step === 1) {
       setIsProcessing(true);
-      setTimeout(() => {
-        setIsProcessing(false);
-        setStep(2);
-      }, 2000);
+      setError(null);
+      
+      // Simuler l'envoi du code par SMS
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
+      setIsProcessing(false);
+      setStep(2);
     } else {
       handlePaymentSuccess();
     }
   };
-
+  
   return (
     <div className="transactionContainer">
-      <h1>Paiement par {displayName}</h1>
-      <p className="amount">Montant: <strong>{amount?.toLocaleString()} fcfa</strong></p>
-      
-      {error && (
-        <div className="error-message">
-          {error}
-          <button 
-            onClick={() => window.location.reload()}
-            className="retry-button"
-          >
-            Réessayer
-          </button>
-        </div>
-      )}
-      
       {!isSuccess ? (
-        <form onSubmit={handleSubmit} className="transactionForm">
+        <form className="transactionForm" onSubmit={handleSubmit}>
+          <h2>Paiement via {displayName}</h2>
+          <p className="amount">Montant: <strong>{amount?.toLocaleString()} fcfa</strong></p>
+          
+          {error && <div className="error-message">{error}</div>}
+
+          {/* Étape 1: Entrer le numéro de téléphone */}
           {step === 1 && (
             <div className="formGroup">
               <label>
@@ -118,15 +115,16 @@ export default function TransactionPage() {
                   type="tel"
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
-                  placeholder="6XX XXX XXX"
+                  placeholder="Ex: 699123456"
                   required
                   pattern="[0-9]{9}"
-                  title="9 chiffres sans espaces"
+                  title="9 chiffres"
                 />
               </label>
             </div>
           )}
-          
+
+          {/* Étape 2: Entrer le code de confirmation */}
           {step === 2 && (
             <div className="formGroup">
               <label>

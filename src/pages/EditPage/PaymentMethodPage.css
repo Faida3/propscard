@@ -1,3 +1,69 @@
+.paymentMethodContainer {
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+.totalAmount {
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+}
+
+.paymentMethods {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  margin-bottom: 2rem;
+}
+
+.paymentMethod {
+  width: 150px;
+  padding: 1rem;
+  border: 2px solid #eee;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin: 0.5rem;
+}
+
+.paymentMethod:hover {
+  border-color: #4CAF50;
+}
+
+.paymentMethod.selected {
+  border-color: #4CAF50;
+  background-color: #f0fff4;
+}
+
+.paymentMethod img {
+  width: 60px;
+  height: 60px;
+  margin-bottom: 0.5rem;
+}
+
+.confirmPaymentButton {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  font-size: 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.confirmPaymentButton:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+.confirmPaymentButton:hover:not(:disabled) {
+  background-color: #388E3C;
+}
 .confirmationContainer {
   display: flex;
   justify-content: center;

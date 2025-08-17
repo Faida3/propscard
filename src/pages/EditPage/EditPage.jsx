@@ -41,13 +41,7 @@ const allTemplates = [
     component: Template2Front,
     backComponent: Template2Back
   },
-  { 
-    id: 5, 
-    title: "Design professionnel",
-    price: "500 fcfa",
-    component: Template1Front,
-    backComponent: Template1Back
-  },
+
 ];
 
 export default function EditPage() {

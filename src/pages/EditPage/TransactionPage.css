@@ -1,3 +1,5 @@
+/* TransactionPage.css */
+
 .transactionContainer {
   max-width: 500px;
   margin: 2rem auto;
@@ -74,12 +76,14 @@
   height: 16px;
   border: 2px solid rgba(255, 255, 255, 0.3);
   border-radius: 50%;
-  border-top-color: white;
+  border-top-color: #fff;
   animation: spin 1s ease-in-out infinite;
 }
 
 @keyframes spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .successMessage {
@@ -87,30 +91,15 @@
 }
 
 .checkmark {
-  font-size: 4rem;
+  font-size: 3rem;
   color: #4CAF50;
   margin-bottom: 1rem;
 }
 
 .error-message {
   color: #e74c3c;
+  background-color: #fcebeb;
   padding: 1rem;
-  margin-bottom: 1rem;
-  background-color: #fdecea;
   border-radius: 5px;
-  line-height: 1.6;
-}
-
-.retry-button {
-  margin-top: 1rem;
-  padding: 0.5rem 1rem;
-  background: #e74c3c;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.retry-button:hover {
-  background: #c0392b;
+  margin-bottom: 1rem;
 }

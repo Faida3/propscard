@@ -1,43 +1,122 @@
-.printOptionContainer {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 2rem;
-  font-family: Arial, sans-serif;
+/* /* PrintOptionPageStyle.css */
+
+.print-options-page {
+  max-width: 900px;
+  margin: 30px auto;
+  padding: 20px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background: #f9f9f9;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
-.optionGroup {
-  margin-bottom: 1.5rem;
+.print-options-page h1 {
+  text-align: center;
+  font-size: 26px;
+  color: #222;
+  margin-bottom: 25px;
 }
 
-.optionGroup label {
+/* Aperçu des cartes */
+.card-preview {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.card-preview h3 {
+  margin-bottom: 15px;
+  font-size: 18px;
+  color: #444;
+}
+
+.card-front, .card-back {
+  width: 300px;
+  height: 180px;
+  margin: 10px 0;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+  background: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Formulaire d'options */
+.options-form {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  margin-bottom: 6px;
+  font-weight: 500;
+  color: #333;
+}
+
+.form-group input,
+.form-group select {
+  padding: 8px 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+  transition: border 0.2s ease-in-out;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  border-color: #0077ff;
+  outline: none;
+}
+
+/* Résumé des prix */
+.price-summary {
+  margin-top: 15px;
+  padding: 15px;
+  background: #f3f6ff;
+  border: 1px solid #cddafd;
+  border-radius: 8px;
+}
+
+.price-summary p {
+  margin: 5px 0;
+  font-size: 14px;
+  color: #444;
+}
+
+.price-summary h3 {
+  margin-top: 10px;
+  font-size: 18px;
+  color: #222;
+}
+
+/* Bouton de paiement */
+.checkout-btn {
   display: block;
-  margin-bottom: 0.5rem;
-  font-weight: bold;
-}
-
-.optionGroup select, 
-.optionGroup input {
   width: 100%;
-  padding: 0.8rem;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 1rem;
-}
-
-.paymentButton {
-  background-color: #4a6fa5;
+  margin-top: 20px;
+  padding: 12px;
+  background: linear-gradient(90deg, #0077ff, #0056cc);
   color: white;
-  padding: 1rem 2rem;
+  font-size: 16px;
+  font-weight: bold;
   border: none;
-  border-radius: 4px;
-  font-size: 1rem;
+  border-radius: 8px;
   cursor: pointer;
-  margin-top: 1rem;
+  transition: transform 0.2s ease, background 0.2s ease;
 }
 
-.cardPreview {
-  background: #f5f5f5;
-  padding: 1rem;
-  margin-bottom: 2rem;
-  border-radius: 4px;
+.checkout-btn:hover {
+  background: linear-gradient(90deg, #0056cc, #0040aa);
+  transform: scale(1.02);
 }

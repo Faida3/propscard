@@ -12,6 +12,8 @@ import Template2Front from '../../components/CardTemplates/Template2Front';
 import Template1Back from '../../components/CardTemplates/Template1Back';
 import Template2Back from '../../components/CardTemplates/Template2Back';
 
+// IMPORTANT : Cette liste de modèles doit être présente sur toutes les pages
+// qui en ont besoin pour éviter de passer des objets non-sériables.
 const allTemplates = [
   { 
     id: 1, 
@@ -35,8 +37,15 @@ const allTemplates = [
   },
   { 
     id: 4, 
-    title: "Design élégant or",
+    title: "Design créatif pour artiste",
     price: "750 fcfa",
+    component: Template1Front,
+    backComponent: Template1Back
+  },
+  { 
+    id: 5, 
+    title: "Design moderne",
+    price: "1000 fcfa",
     component: Template2Front,
     backComponent: Template2Back
   },
@@ -47,6 +56,7 @@ export default function PreviewPage() {
   const navigate = useNavigate();
   const { formData, templateId } = location.state || {};
   
+  // Utilisez l'ID pour trouver le modèle correct dans la liste
   const template = allTemplates.find(t => t.id === templateId);
   const TemplateFront = template?.component;
   const TemplateBack = template?.backComponent;
@@ -67,10 +77,12 @@ export default function PreviewPage() {
   };
 
   const handleOrder = () => {
+    // CORRECTION : On passe uniquement l'ID du modèle et les données sérialisables.
+    // L'objet `template` complet est non-sérialisable à cause des composants React.
     navigate('/print-options', {
       state: {
         cardData: formData,
-        template,
+        templateId, // <-- Correction ici, on passe l'ID
         action: 'order'
       }
     });
@@ -91,10 +103,10 @@ export default function PreviewPage() {
       
       <div className="action-buttons">
         <button className="custom-button download-btn" onClick={handleDownload}>
-          Télécharger
+          Télécharger le PDF
         </button>
         <button className="custom-button order-btn" onClick={handleOrder}>
-          Passer votre commande
+          Commander l'impression
         </button>
       </div>
     </div>
